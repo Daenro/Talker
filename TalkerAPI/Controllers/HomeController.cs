@@ -20,12 +20,12 @@ namespace TalkerAPI.Controllers
         public HomeController()
         {
 
-            client = new JsonServiceClient("http://localhost:55034/api");
-            //{
-            //    UserName = "admin",
-            //    Password = "qwerty"
-            //};
-            //client.AlwaysSendBasicAuthHeader = true;
+            client = new JsonServiceClient("http://localhost:55034/api")
+            {
+                UserName = "admin",
+                Password = "qwerty"
+            };
+            client.AlwaysSendBasicAuthHeader = true;
 
         }
 

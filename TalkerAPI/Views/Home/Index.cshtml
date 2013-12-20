@@ -3,41 +3,46 @@
     ViewBag.Title = "Index";
 }
 <div style="align-content:center">
-    You are logged as @Model.UserName. <br />
-    @Html.ActionLink("Make new record", "NewRecord")
-    @if (@Model.Records == null || @Model.Records.Count == 0)
+    @if (@Model != null)
     {
-        <text>There are no records</text>
-        <br>
-    }
-    else
-    {
-        foreach (var a in @Model.Records)
+
+        <text> You are logged as @Model.UserName. </text><br />
+        @Html.ActionLink("Make new record", "NewRecord")
+        if (Model.Records == null || Model.Records.Count == 0)
         {
+            <text>There are no records</text>
             <br>
-            <br>
-            <div class="display-field">
-                @Html.DisplayFor(model => a.UserName)
-            </div>
-
-            <div class="display-field">
-                @Html.DisplayFor(model => a.Message)
-            </div>
-
-            <div class="display-field">
-                <audio src="@a.Value" id='player' controls>
-                    <div>
-                        <button onclick="document.getElementById('player').play()">Воспроизведение</button>
-                        <button onclick="document.getElementById('player').pause()">Пауза</button>
-                        <button onclick="document.getElementById('player').volume+=0.1">Громкость +</button>
-                        <button onclick="document.getElementById('player').volume-=0.1">Громкость -</button>
-                    </div>
-                </audio>
-            </div>
-
-            <div class="display-field">
-                @Html.DisplayFor(model => a.Date)
-            </div>
         }
+        else
+        {
+            foreach (var a in @Model.Records)
+            {
+                <br>
+                <br>
+                <div class="display-field">
+                    @Html.DisplayFor(model => a.UserName)
+                </div>
+
+                <div class="display-field">
+                    @Html.DisplayFor(model => a.Message)
+                </div>
+
+                <div class="display-field">
+                    <audio src="@a.Value" id='player' controls>
+                        <div>
+                            <button onclick="document.getElementById('player').play()">Воспроизведение</button>
+                            <button onclick="document.getElementById('player').pause()">Пауза</button>
+                            <button onclick="document.getElementById('player').volume+=0.1">Громкость +</button>
+                            <button onclick="document.getElementById('player').volume-=0.1">Громкость -</button>
+                        </div>
+                    </audio>
+                </div>
+
+                <div class="display-field">
+                    @Html.DisplayFor(model => a.Date)
+                </div>
+            }
+        }
+
     }
 </div>
