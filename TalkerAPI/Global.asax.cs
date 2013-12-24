@@ -63,7 +63,7 @@ namespace TalkerAPI
             else
                 authRepo.CreateMissingTables();
 
-            dbFactory.Run(db => db.CreateTable<API.Record>(overwrite: true));
+            dbFactory.Run(db => db.CreateTable<API.Record>(overwrite: false));
 
         }
     }

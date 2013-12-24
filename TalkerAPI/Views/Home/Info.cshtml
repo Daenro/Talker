@@ -1,0 +1,44 @@
+﻿@model TalkerAPI.API.UserRecordsResponse
+@{
+    ViewBag.Title = "Profile";
+}
+<div style="align:center">
+    @{string name = Model.UserName ?? "Anonym";}
+    You are logged as @name. <br />
+    @Html.ActionLink("Make new record", "NewRecord")
+    @if (@Model != null && (@Model.Records == null || @Model.Records.Count == 0))
+    {
+        <text>There are no records</text>
+        <br>
+    }
+    else
+    {
+        foreach (var a in @Model.Records)
+        {
+            <br>
+            <br>
+            <div class="display-field">
+                @Html.DisplayFor(model => a.UserName)
+            </div>
+
+            <div class="display-field">
+                @Html.DisplayFor(model => a.Message)
+            </div>
+
+            <div class="display-field">
+                <audio src="@a.Value" id='player' controls>
+                    <div>
+                        <button onclick="document.getElementById('player').play()">Воспроизведение</button>
+                        <button onclick="document.getElementById('player').pause()">Пауза</button>
+                        <button onclick="document.getElementById('player').volume+=0.1">Громкость +</button>
+                        <button onclick="document.getElementById('player').volume-=0.1">Громкость -</button>
+                    </div>
+                </audio>
+            </div>
+
+            <div class="display-field">
+                @Html.DisplayFor(model => a.Date)
+            </div>
+        }
+    }
+</div>

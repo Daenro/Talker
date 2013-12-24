@@ -15,28 +15,44 @@ namespace TalkerAPI.Controllers
     {
 
         JsonServiceClient client;
-        AuthResponse authResponse;
-
-        public HomeController()
-        {
-
-            client = new JsonServiceClient("http://localhost:55034/api")
-            {
-                UserName = "admin",
-                Password = "qwerty"
-            };
-            client.AlwaysSendBasicAuthHeader = true;
-
-        }
 
         public ActionResult Index()
         {
+            if(Session["name"]==null)
+            {
+                return View();
+            }         
+            return RedirectToAction("Info");
+        }
+
+        [HttpPost]
+        public ActionResult Index(string name,string password)
+        {
+            Session["name"] = name;
+            Session["password"] = password;
+            return RedirectToAction("Info");
+        }
+
+        public ActionResult Info()
+        {
+            var t = Session["name"];
+            if(Session["name"]==null)
+            {
+                return RedirectToAction("Index");
+            }
+            client = new JsonServiceClient("http://coursemanage.apphb.com//api")
+            {
+                UserName = Session["name"].ToString(),
+                Password = Session["password"].ToString()
+            };
+            client.AlwaysSendBasicAuthHeader = true;
+
             UserRecordsResponse res = null;
             try
             {
                 res = client.Get(new UserRecords { UserName = client.UserName });
             }
-            catch (Exception e)
+            catch
             {
 
             }
@@ -51,6 +67,16 @@ namespace TalkerAPI.Controllers
         [HttpPost]
         public ActionResult PostRecord(HttpPostedFileBase[] aaa)
         {
+            var gh = client;
+            if (client == null)
+            {
+                client = new JsonServiceClient("http://coursemanage.apphb.com//api")
+                {
+                    UserName = Session["name"].ToString(),
+                    Password = Session["password"].ToString()
+                };
+                client.AlwaysSendBasicAuthHeader = true;
+            }
             byte[] buff;
             using (MemoryStream ms = new MemoryStream())
             {
@@ -58,8 +84,8 @@ namespace TalkerAPI.Controllers
                 buff = ms.ToArray();
             }
             SendRecord a = new SendRecord { UserName = client.UserName, Message = "New record", Value = buff };
-            var b = client.Post(a);
-            return Index();
+            var b = client.Post(a);           
+            return RedirectToAction("Info");
         }
 
     }
