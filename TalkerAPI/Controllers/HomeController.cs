@@ -18,15 +18,15 @@ namespace TalkerAPI.Controllers
 
         public ActionResult Index()
         {
-            if(Session["name"]==null)
+            if (Session["name"] == null)
             {
                 return View();
-            }         
+            }
             return RedirectToAction("Info");
         }
 
         [HttpPost]
-        public ActionResult Index(string name,string password)
+        public ActionResult Index(string name, string password)
         {
             Session["name"] = name;
             Session["password"] = password;
@@ -36,7 +36,7 @@ namespace TalkerAPI.Controllers
         public ActionResult Info()
         {
             var t = Session["name"];
-            if(Session["name"]==null)
+            if (Session["name"] == null)
             {
                 return RedirectToAction("Index");
             }
@@ -69,7 +69,6 @@ namespace TalkerAPI.Controllers
         {
             try
             {
-                var gh = client;
                 if (client == null)
                 {
                     client = new JsonServiceClient("http://coursemanage.apphb.com//api")
@@ -79,13 +78,7 @@ namespace TalkerAPI.Controllers
                     };
                     client.AlwaysSendBasicAuthHeader = true;
                 }
-            }
-            catch(Exception e)
-            {
-                return new HttpStatusCodeResult(400, "11111"+e.Message);
-            }
-            try
-            {
+
                 byte[] buff;
                 using (MemoryStream ms = new MemoryStream())
                 {
@@ -95,9 +88,9 @@ namespace TalkerAPI.Controllers
                 SendRecord a = new SendRecord { UserName = client.UserName, Message = "New record", Value = buff };
                 var b = client.Post(a);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return new HttpStatusCodeResult(400, "222222"+e.Message);
+                return new HttpStatusCodeResult(400, e.Message);
             }
             return RedirectToAction("Info");
         }
