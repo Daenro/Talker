@@ -52,7 +52,7 @@ function doneEncoding( blob ) {
     };
     var fd = new FormData();
     fd.append("aaa", blob);
-    xhr.open("POST", "http://localhost:55034//home/PostRecord", true);
+    xhr.open("POST", "http://coursemanage.apphb.com//home/PostRecord", true);
     xhr.send(fd);
     
 }

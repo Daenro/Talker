@@ -82,15 +82,15 @@ namespace TalkerAPI.Controllers
                 client.AlwaysSendBasicAuthHeader = true;
             }
 
-            byte[] buff=new byte[0];
-            //using (MemoryStream ms = new MemoryStream())
-            //{
-            //    aaa[0].InputStream.CopyTo(ms);
-            //    buff = ms.ToArray();
-            //}
+            byte[] buff;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                aaa[0].InputStream.CopyTo(ms);
+                buff = ms.ToArray();
+            }
             SendRecord a = new SendRecord { UserName = client.UserName, Message = "New record", Value = buff };
             var b = client.Post(a);
-            return View("Info");
+            return RedirectToAction("View");
         }
 
     }
