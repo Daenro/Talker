@@ -87,6 +87,10 @@ namespace TalkerAPI.Controllers
                 }
                 SendRecord a = new SendRecord { UserName = client.UserName, Message = "New record", Value = buff };
                 var b = client.Post(a);
+                if (b.RecordId==0)
+                {
+                    throw new Exception("No adding in DB");
+                }
             }
             catch (Exception e)
             {
