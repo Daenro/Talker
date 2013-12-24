@@ -72,36 +72,25 @@ namespace TalkerAPI.Controllers
         [HttpPost]
         public ActionResult PostRecord(HttpPostedFileBase[] aaa)
         {
-            try
+            if (client == null)
             {
-                if (client == null)
+                client = new JsonServiceClient("http://coursemanage.apphb.com//api")
                 {
-                    client = new JsonServiceClient("http://coursemanage.apphb.com//api")
-                    {
-                        UserName = Session["name"].ToString(),
-                        Password = Session["password"].ToString()
-                    };
-                    client.AlwaysSendBasicAuthHeader = true;
-                }
+                    UserName = Session["name"].ToString(),
+                    Password = Session["password"].ToString()
+                };
+                client.AlwaysSendBasicAuthHeader = true;
+            }
 
-                byte[] buff;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    aaa[0].InputStream.CopyTo(ms);
-                    buff = ms.ToArray();
-                }
-                SendRecord a = new SendRecord { UserName = client.UserName, Message = "New record", Value = buff };
-                var b = client.Post(a);
-                if (b.RecordId==0)
-                {
-                    Session["errora"] = "1";
-                }
-            }
-            catch (Exception e)
-            {
-                return new HttpStatusCodeResult(400, e.Message);
-            }
-            return RedirectToAction("Info");
+            byte[] buff=new byte[0];
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    aaa[0].InputStream.CopyTo(ms);
+            //    buff = ms.ToArray();
+            //}
+            SendRecord a = new SendRecord { UserName = client.UserName, Message = "New record", Value = buff };
+            var b = client.Post(a);
+            return View("Info");
         }
 
     }
