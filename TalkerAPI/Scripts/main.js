@@ -31,9 +31,7 @@ var recIndex = 0;
 
 function saveAudio() {
     
-
     audioRecorder.exportWAV(doneEncoding);
-    setTimeout("location.reload(true);", 600);
 }
 
 function drawWave( buffers ) {
