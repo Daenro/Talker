@@ -67,24 +67,38 @@ namespace TalkerAPI.Controllers
         [HttpPost]
         public ActionResult PostRecord(HttpPostedFileBase[] aaa)
         {
-            var gh = client;
-            if (client == null)
+            try
             {
-                client = new JsonServiceClient("http://coursemanage.apphb.com//api")
+                var gh = client;
+                if (client == null)
                 {
-                    UserName = Session["name"].ToString(),
-                    Password = Session["password"].ToString()
-                };
-                client.AlwaysSendBasicAuthHeader = true;
+                    client = new JsonServiceClient("http://coursemanage.apphb.com//api")
+                    {
+                        UserName = Session["name"].ToString(),
+                        Password = Session["password"].ToString()
+                    };
+                    client.AlwaysSendBasicAuthHeader = true;
+                }
             }
-            byte[] buff;
-            using (MemoryStream ms = new MemoryStream())
+            catch(Exception e)
             {
-                aaa[0].InputStream.CopyTo(ms);
-                buff = ms.ToArray();
+                return new HttpStatusCodeResult(400, "11111"+e.Message);
             }
-            SendRecord a = new SendRecord { UserName = client.UserName, Message = "New record", Value = buff };
-            var b = client.Post(a);           
+            try
+            {
+                byte[] buff;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    aaa[0].InputStream.CopyTo(ms);
+                    buff = ms.ToArray();
+                }
+                SendRecord a = new SendRecord { UserName = client.UserName, Message = "New record", Value = buff };
+                var b = client.Post(a);
+            }
+            catch(Exception e)
+            {
+                return new HttpStatusCodeResult(400, "222222"+e.Message);
+            }
             return RedirectToAction("Info");
         }
 
