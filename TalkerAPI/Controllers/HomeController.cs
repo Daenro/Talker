@@ -61,6 +61,11 @@ namespace TalkerAPI.Controllers
 
         public ActionResult NewRecord()
         {
+            ViewBag.Er = "NoError";
+            if (Session["errora"] != null && Session["errora"] == "1")
+            {
+                ViewBag.Er = "Error";
+            }
             return View();
         }
 
@@ -89,7 +94,7 @@ namespace TalkerAPI.Controllers
                 var b = client.Post(a);
                 if (b.RecordId==0)
                 {
-                    throw new Exception("No adding in DB");
+                    Session["errora"] = "1";
                 }
             }
             catch (Exception e)
